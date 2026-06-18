@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { pool } from '@/lib/database'
 
-async function POST( req: Request) {
+export async function POST( req: Request) {
     try {
         const body = await req.json();
         const {email, password} = body
