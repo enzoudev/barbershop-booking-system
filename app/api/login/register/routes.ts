@@ -12,7 +12,8 @@ export async function POST(req: Request) {
             return NextResponse.json( {error: 'Algum campo obrigatório está em branco'}, {status:400});
         }
 
-        const [user]: any = await pool.query('SELECT id FROM usuarios WHERE email = ?', [email]);
+        const result = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+        const user = result.rows;
 
         if(user.length > 0) {
             return NextResponse.json( {error: "Já existe uma conta com esse email"}, {status:400})
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
         const salt = await bcrypt.genSalt(10);
         const passwordCripto = await bcrypt.hash(password, salt)
 
-        await pool.query('INSERT INTO usuarios (name, email, password) VALUES (?,?,?)', [name, email, passwordCripto])
+        await pool.query('INSERT INTO users (name, email, password) VALUES ($1,$2,$3)', [name, email, passwordCripto])
 
         return NextResponse.json( {message: "Conta criada com sucesso!"}, {status:201})
     } catch(error) {
