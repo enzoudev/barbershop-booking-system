@@ -4,7 +4,7 @@ import  bcrypt from 'bcryptjs'
 
 
 export async function POST(req: Request) {
-
+    console.log("--- API CHAMADA ---");
     try {
         const body = await req.json();
         const {name, email, password} = body;
@@ -13,10 +13,13 @@ export async function POST(req: Request) {
             return NextResponse.json( {error: 'Algum campo obrigatório está em branco'}, {status:400});
         }  
 
+        
         const client = await pool.connect();
+   
 
         try {
-        const result = await client.query('SELECT id FROM users WHERE email = $1', [email]);
+        
+        const result = await client.query('SELECT id_user FROM users WHERE email = $1', [email]);
         const user = result.rows;
 
         if(user.length > 0) {
@@ -36,7 +39,7 @@ export async function POST(req: Request) {
         }
 
 
-        
+
     } catch(error) {
         console.error('Erro na API:', error)
         return NextResponse.json({ error: 'Erro interno no servidor ao criar conta.' }, { status: 500 });
