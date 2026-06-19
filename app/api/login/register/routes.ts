@@ -6,9 +6,9 @@ import  bcrypt from 'bcryptjs'
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const {nome, email, password} = body;
+        const {name, email, password} = body;
 
-        if(!nome || !email || !password) {
+        if(!name || !email || !password) {
             return NextResponse.json( {error: 'Algum campo obrigatório está em branco'}, {status:400});
         }
 
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         const salt = await bcrypt.genSalt(10);
         const passwordCripto = await bcrypt.hash(password, salt)
 
-        await pool.query('INSERT INTO usuarios (nome, email, senha) VALUES (?,?,?)', [nome, email, passwordCripto])
+        await pool.query('INSERT INTO usuarios (name, email, password) VALUES (?,?,?)', [name, email, passwordCripto])
 
         return NextResponse.json( {message: "Conta criada com sucesso!"}, {status:201})
     } catch(error) {
