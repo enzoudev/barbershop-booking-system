@@ -4,7 +4,6 @@ import  bcrypt from 'bcryptjs'
 
 
 export async function POST(req: Request) {
-    console.log("--- API CHAMADA ---");
     try {
         const body = await req.json();
         const {name, email, password} = body;
