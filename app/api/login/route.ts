@@ -1,30 +1,35 @@
 import { NextResponse } from 'next/server'
 import { pool } from '@/lib/database'
+import bcrypt from 'bcryptjs'
 
 export async function POST( req: Request) {
     try {
         const body = await req.json();
+        console.log("O que chegou no servidor:", body);
         const {email, password} = body
         if(!email || !password) {
             return NextResponse.json( {error: 'Algum campo obrigatório está em branco!'}, {status: 400})
         }
 
-    const [usuarios]: any = pool.query( 'SELECT * FROM usuarios WHERE = ?', [email])
+    const results = await pool.query( 'SELECT * FROM users WHERE email = $1', [email])
+    
+    const resultUser = results.rows
 
-
-    if(usuarios.length == 0) {
+    if(resultUser.length == 0) {
         return NextResponse.json( {error: 'Email/usuário ou senha incorretos'}, {status: 400})
     }
     
-    const usuario = usuarios[0]
-    if(usuario.password !== password) {
+    const usuario = resultUser[0]
+
+    const passwordMatch = await bcrypt.compare(password, usuario.password);
+    if(!passwordMatch) {
         return NextResponse.json( {error: 'Senha incorreta.'}, {status: 401})
     }
 
     return NextResponse.json(
         {
             message: 'Login realizado com sucesso!',
-            usuario: {id: usuario.id, nome: usuarios.name, email: usuario.name}
+            usuario: {id: usuario.id, nome: usuario.name, email: usuario.email}
         }
         , {status: 200}
         
