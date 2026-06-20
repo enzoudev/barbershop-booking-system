@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { pool } from '@/lib/database'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken';
 
 export async function POST( req: Request) {
     try {
@@ -25,6 +26,12 @@ export async function POST( req: Request) {
     if(!passwordMatch) {
         return NextResponse.json( {error: 'Senha incorreta.'}, {status: 401})
     }
+
+    const token = jwt.sign(
+        {id: usuario.id, email: usuario.email},
+        process.env.JWT_SECRET!,
+        {expiresIn: '24h'}
+    )
 
     return NextResponse.json(
         {
