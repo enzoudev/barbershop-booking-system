@@ -1,6 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from '@/lib/database'
 import { getUserIdFromToken } from '@/lib/auth'
+import { formatTime } from '@/lib/formatTime'
+
+
+
+export async function GET(req: NextRequest) {
+    try {
+        const { searchParams } = new URL(req.url);
+
+
+        const date = searchParams.get('date'); // Data que o cliente quer consultar
+        const id_barber = searchParams.get('id_barber');
+
+    if (!date || !id_barber) {
+    return NextResponse.json({ error: "Data ou barbeiro não informado" }, { status: 400 });
+    }
+
+        const { rows } = await pool.query(
+        "SELECT date_time FROM appointments WHERE date_time::date = $1 AND id_barber = $2",
+        [date, id_barber]
+        );
+    
+    const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+    const ocupados = rows.map(row => formatTime(row.date_time));
+
+    const available = timeJob.filter(h => !ocupados.includes(h));
+    if(available.length === 0) {
+        return NextResponse.json( {message: "Todos os horários estão ocupados!"});
+    }
+
+    return NextResponse.json(available)
+    } catch(err) {
+        console.error("Erro na API: ", err)
+        return NextResponse.json( {error: "Erro na API"}, {status:500})
+    }
+}
+
+
+
+
+
 
 export async function POST(req: NextRequest) {
     
