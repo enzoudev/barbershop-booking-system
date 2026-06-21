@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { pool } from '@/lib/database'
-
+import { getUserIdFromToken } from '@/lib/auth'
 
 export async function POST(req: NextRequest) {
     
