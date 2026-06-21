@@ -11,13 +11,13 @@ export async function POST(req: NextRequest) {
 
 
         const body = await req.json();
-        const {id_service, date_time} = body;
+        const {id_service, date_time, id_barber} = body;
 
         if(!id_service || !date_time) {
             return NextResponse.json( {error: "Algum campo obrigatório não está preenchido"}, {status:400});
         }
 
-        await pool.query("INSERT INTO appointments (id_user, id_service, date_time) VALUES  ($1, $2, $3)",[userId, id_service, date_time])
+        await pool.query("INSERT INTO appointments (id_user, id_service, date_time, id_barber) VALUES  ($1, $2, $3)",[userId, id_service, date_time, id_barber])
 
         return NextResponse.json( {message: "Agendamento criado com sucesso!"}, {status:201})
     } catch(err) {
