@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+// 1. Importe o componente da sua NavBar
+import { NavBar } from "@/components/common/NavBar"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +29,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col" suppressHydrationWarning={true}>
+        {/* 2. Coloque a NavBar aqui */}
+        <NavBar /> 
+        
+        {/* 3. O conteúdo das páginas (page.tsx) será renderizado aqui */}
+        <main className="flex-1">{children}</main>
+      </body>
     </html>
   );
 }
