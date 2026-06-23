@@ -3,9 +3,9 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 
-export function Hero() {
+export function Hero( {className }: {className?: string}) {
     return (
-        <section className="w-full bg-[#0A0A0A] py-32 flex justify-center items-center border-b-1">
+        <section className={className}>
             <div className="max-w-4xl text-center px-6">
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
