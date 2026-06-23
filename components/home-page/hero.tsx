@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 
 export function Hero() {
     return (
-        <section className="w-full bg-[#0A0A0A] py-32 flex justify-center items-center">
+        <section className="w-full bg-[#0A0A0A] py-32 flex justify-center items-center border-b-1">
             <div className="max-w-4xl text-center px-6">
                 <motion.div 
                     initial={{ opacity: 0, y: 20 }}
@@ -16,8 +16,13 @@ export function Hero() {
                         ESTILO E<br />
                         PRECISÃO.
                     </h1>
-                    <p className="text-gray-400 text-xl mb-12 max-w-2xl mx-auto">
-                        O corte que define o seu visual. Agende seu horário e sinta a experiência de uma barbearia clássica.
+                    <p className="text-gray-400 text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+                        O corte que define o seu visual. Agende seu horário e sinta a experiência de uma barbearia clássica, 
+                        onde a tradição encontra o estilo moderno. 
+                        <br /><br />
+                        Oferecemos desde o acabamento mais preciso na navalha até tratamentos de barba com toalha quente, 
+                        tudo pensado para garantir o seu bem-estar. Venha relaxar, tomar um café e sair pronto para 
+                        qualquer desafio.
                     </p>
                     <button className="bg-white text-black px-10 py-4 font-bold text-lg hover:bg-gray-200 transition-colors cursor-pointer">
                         AGENDAR HORÁRIO
