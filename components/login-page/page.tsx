@@ -2,11 +2,29 @@
 import Image from "next/image"
 import { EnvelopeSimpleIcon, EyeIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
+import {Spinner} from '@/lib/spinner'
 
 
 export function LoginForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [warn, setWarn] = useState("")
+    const [validation, setVal] = useState(false)
+
+    const handleLogin = () => {
+
+        console.log("Entrou na função handleLogin!");
+        if(!email || !password) {
+            setWarn("Algum campo não está preenchido corretamente")
+            setVal(true)
+            return
+        }
+        setVal(false)
+        console.log(email, password)
+    }
+
+
     return (
         <div className="bg-[#181818] w-full mt-[20px]">
             <section className="flex bg-white w-[1000px] h-[700px] m-auto shadow-2xl overflow-hidden rounded-xs" >
@@ -15,9 +33,10 @@ export function LoginForm() {
                 <div className="flex items-center flex-col">
                 <p className="text-[#475569] text-[15px]">Dê o próximo passo no seu estilo</p>
                 <h2 className=" text-[20px] text-black font-black tracking-tight border-[#020618]">Acesse sua conta para continuar.</h2>
-                </div>
+                <div className={`${!validation ? "hidden" : "text-[13px] text-red-500"}`} >{warn}</div>
+            </div>   
 
-                <form className="input-conteiner flex flex-col gap-[5px] w-full px-16 flex flex-col gap-[15px]">
+                <div className="input-conteiner flex flex-col gap-[15px] w-full px-16">
                     
                     <div className="relative w-full">
                         {/* O label posicionado exatamente no topo da borda */}
@@ -28,12 +47,17 @@ export function LoginForm() {
                         <input 
                             type="email" 
                             placeholder="example@email.com" 
-                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black" 
+                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
+                            onChange={(e) => setEmail(e.target.value)}
                         />
 
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                        <button 
+                            type="button" // OBRIGATÓRIO: isso evita o refresh
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                            onClick={(e) => e.preventDefault()}
+                        >
                             <EnvelopeSimpleIcon size={20} />
-                        </div>
+                        </button>
                     </div>
 
                     <div className="relative w-full">
@@ -45,17 +69,18 @@ export function LoginForm() {
                         <input 
                             type="password" 
                             placeholder="********" 
-                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black" 
+                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
+                            onChange={(e) => setPassword(e.target.value)}
                         />
 
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+                        {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
                             <EyeIcon size={20} />
-                        </div>
+                        </div> */}
                     </div>
 
 
-                    <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer">Entrar</button>
-                </form>
+                    <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer flex justify-center items-center" onClick={()=>  handleLogin()}>{loading ? <Spinner/> : "Entrar"}</button>
+                </div>
 
                 <div className="flex self-start mt-[150px] ml-[15px]">
                     <h1 className=" text-[#334155] text-[13px] t">Não tem uma conta? </h1>
