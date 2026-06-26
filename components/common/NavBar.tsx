@@ -6,7 +6,7 @@ import { useState } from 'react'
 export function NavBar() {
 
 const [bgLogin, setbgLogin] = useState(false);
-const [hoverNav, setHoverNav] = useState<string | null>(null);
+const [hoverNav, setHoverNav] = useState<string | null>("gold");
 
 
 const customColor = "text-[oklch(70.7%_0.022_261.325)]";
