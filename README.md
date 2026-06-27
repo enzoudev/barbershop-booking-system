@@ -1,36 +1,36 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Barbershop Booking System
 
-## Getting Started
+Este projeto tem como objetivo facilitar o agendamento de serviços em uma barbearia, permitindo que clientes marquem seus horários de forma rápida e intuitiva.
 
-First, run the development server:
+## 🚧 Status do Projeto
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+O sistema está em desenvolvimento ativo.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Funcionalidades Implementadas:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [x] Layout da página de Login.
+- [x] Componentes de entrada (inputs) customizados com CSS.
+- [x] Design responsivo utilizando Tailwind CSS.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### O que está sendo desenvolvido:
 
-## Learn More
+- [ ] Integração com o sistema de autenticação do Supabase.
+- [ ] Conexão com banco de dados PostgreSQL (Supabase).
+- [ ] Página de dashboard e agendamento de horários.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tecnologias Utilizadas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**: Next.js, Tailwind CSS, TypeScript.
+- **Backend/Database**: Supabase (Autenticação e PostgreSQL).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🚀 Como rodar o projeto
 
-## Deploy on Vercel
+As instruções de instalação e a configuração das variáveis de ambiente (.env) serão disponibilizadas em breve.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 Contribuições
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contribuições são muito bem-vindas! Sinta-se à vontade para abrir uma issue para relatar bugs ou sugerir melhorias.
+
+---
+
+Desenvolvido por **Enzo**.

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import {Spinner} from '@/lib/spinner'
 
 
-export function LoginForm() {
+export default function LoginForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
@@ -26,7 +26,7 @@ export function LoginForm() {
 
 
     return (
-        <div className="bg-[#181818] w-full mt-[20px]">
+        <div className="bg-[#181818] min-h-screen flex items-center justify-center">
             <section className="flex bg-white w-[1000px] h-[700px] m-auto shadow-2xl overflow-hidden rounded-xs" >
 
             <div className="form-login flex flex-col items-center w-1/2 mt-50 gap-10 h-full">
