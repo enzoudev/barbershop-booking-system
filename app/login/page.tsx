@@ -3,6 +3,7 @@ import Image from "next/image"
 import { EnvelopeSimpleIcon, EyeIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
 import {Spinner} from '@/lib/spinner'
+import { authenticateUser } from "@/services/authService"
 
 
 export default function LoginForm() {
@@ -12,7 +13,7 @@ export default function LoginForm() {
     const [warn, setWarn] = useState("")
     const [validation, setVal] = useState(false)
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
 
         console.log("Entrou na função handleLogin!");
         if(!email || !password) {
@@ -20,8 +21,17 @@ export default function LoginForm() {
             setVal(true)
             return
         }
-        setVal(false)
-        console.log(email, password)
+        setVal(false);
+        setLoading(true);
+        try {
+            const data = await authenticateUser(email, password)
+            console.log("Sucesso", data)
+        } catch(err) {
+          setWarn("Erro ao autenticar. Verifique suas credenciais.");
+          setVal(true)  
+        } finally {
+            setLoading(false)
+        }
     }
 
 
