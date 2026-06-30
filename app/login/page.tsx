@@ -54,12 +54,7 @@ export default function LoginForm() {
                             E-mail
                         </label>
                         
-                        <input 
-                            type="email" 
-                            placeholder="example@email.com" 
-                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
+
 
                         <button 
                             type="button" // OBRIGATÓRIO: isso evita o refresh
@@ -68,6 +63,15 @@ export default function LoginForm() {
                         >
                             <EnvelopeSimpleIcon size={20} />
                         </button>
+                        
+                        <input 
+                            type="email" 
+                            placeholder="example@email.com" 
+                            className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+
+
                     </div>
 
                     <div className="relative w-full">
