@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import Image from "next/image"
 import { EnvelopeSimpleIcon, EyeIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
@@ -98,7 +99,7 @@ export default function LoginForm() {
 
                 <div className="flex self-start mt-[150px] ml-[15px]">
                     <h1 className=" text-[#334155] text-[13px] t">Não tem uma conta? </h1>
-                    <p className="ml-[4px] text-[#3A7FF9] text-[13px] cursor-pointer"> Se Registre</p>
+                    <Link href="/register" className="ml-[4px] text-[#3A7FF9] text-[13px] cursor-pointer"> Se Registre</Link>
                 </div>
             </div>
     
