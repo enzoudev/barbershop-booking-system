@@ -4,10 +4,14 @@ import { EnvelopeSimpleIcon, EyeIcon, UserIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
 import {Spinner} from '@/lib/spinner'
 import { authenticateUser } from "@/services/authService"
-import { registerHandle } from "@/services/registerService"
+import {  registerService } from "@/services/registerService"
+import Link from 'next/link';
+import { useRouter } from 'next/navigation'
+
 
 
 export default function RegisterForm() {
+    const router = useRouter();
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -19,17 +23,18 @@ export default function RegisterForm() {
 
         const registerHandle = async () => {
 
-        console.log("Entrou na função handleLogin!");
+        
         if(!name || !email || !password || !ConfirmPassword) {
-            setWarn("Algum campo não está preenchido")
+            setWarn("Preencha todos os campos")
             setVal(true)
             return
         }
         setVal(false);
         setLoading(true);
         try {
-            const data = await registerHandle(name, email, password)
+            const data = await  registerService(name, email, password)
             console.log("Sucesso", data)
+            router.push('/login');
         } catch(err) {
           setWarn("Erro ao autenticar. Verifique suas credenciais.");
           setVal(true)  
@@ -88,15 +93,6 @@ export default function RegisterForm() {
                             E-mail
                         </label>
                         
-
-
-                        <button 
-                            type="button" 
-                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
-                            onClick={(e) => e.preventDefault()}
-                        >
-                            <EnvelopeSimpleIcon size={20} />
-                        </button>
                         
                         <input 
                             type="email" 
@@ -104,7 +100,14 @@ export default function RegisterForm() {
                             className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
                             onChange={(e) => setEmail(e.target.value)}
                         />
-
+                        <button
+                            tabIndex={-1} 
+                            type="button" 
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                            onClick={(e) => e.preventDefault()}
+                        >
+                            <EnvelopeSimpleIcon size={20} />
+                        </button>
 
                     </div>
 
@@ -149,9 +152,9 @@ export default function RegisterForm() {
                     <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer flex justify-center items-center" onClick={()=>  registerHandle()}>{loading ? <Spinner/> : "Entrar"}</button>
                 </div>
 
-                <div className="flex self-start mt-[150px] ml-[15px]">
-                    <h1 className=" text-[#334155] text-[13px] t">Já possui uma conta? </h1>
-                    <p className="ml-[4px] text-[#3A7FF9] text-[13px] cursor-pointer"> Entre agora</p>
+                <div className="flex self-start  ml-[15px] mt-[6px]">
+                    <h1 className=" text-[#334155] text-[13px]  ">Já possui uma conta? </h1>
+                    <Link href='/login' className="ml-[4px] text-[#3A7FF9] text-[13px] cursor-pointer"> Entre agora</Link>
                 </div>
             </div>
     
