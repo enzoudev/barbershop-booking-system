@@ -4,14 +4,39 @@ import { EnvelopeSimpleIcon, EyeIcon, UserIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
 import {Spinner} from '@/lib/spinner'
 import { authenticateUser } from "@/services/authService"
+import { registerHandle } from "@/services/registerService"
 
 
 export default function RegisterForm() {
+    const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [ConfirmPassword, setConfirmPassword] = useState("")
     const [loading, setLoading] = useState(false)
     const [warn, setWarn] = useState("")
     const [validation, setVal] = useState(false)
+
+
+        const registerHandle = async () => {
+
+        console.log("Entrou na função handleLogin!");
+        if(!name || !email || !password || !ConfirmPassword) {
+            setWarn("Algum campo não está preenchido")
+            setVal(true)
+            return
+        }
+        setVal(false);
+        setLoading(true);
+        try {
+            const data = await registerHandle(name, email, password)
+            console.log("Sucesso", data)
+        } catch(err) {
+          setWarn("Erro ao autenticar. Verifique suas credenciais.");
+          setVal(true)  
+        } finally {
+            setLoading(false)
+        }
+    }
 
 
      return (
@@ -46,7 +71,7 @@ export default function RegisterForm() {
                             type="email" 
                             placeholder="Ex: João Silva" 
                             className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setName(e.target.value)}
                         />
 
 
@@ -112,7 +137,7 @@ export default function RegisterForm() {
                             type="password" 
                             placeholder="Confirme sua senha" 
                             className="w-full h-14 border border-[#cbd5e1] rounded-lg px-4 outline-none focus:border-[#181818] placeholder:text-[#64748b] text-black"
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                         />
 
                         {/* <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
@@ -121,7 +146,7 @@ export default function RegisterForm() {
                     </div>
 
 
-                    <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer flex justify-center items-center" onClick={()=>  handleRegister()}>{loading ? <Spinner/> : "Entrar"}</button>
+                    <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer flex justify-center items-center" onClick={()=>  registerHandle()}>{loading ? <Spinner/> : "Entrar"}</button>
                 </div>
 
                 <div className="flex self-start mt-[150px] ml-[15px]">
