@@ -152,7 +152,7 @@ export default function RegisterForm() {
                     <button className="border border-[#cbd5e1] rounded-md h-[45px] w-full h-12 px-4 text-white bg-[#181818] cursor-pointer flex justify-center items-center" onClick={()=>  registerHandle()}>{loading ? <Spinner/> : "Entrar"}</button>
                 </div>
 
-                <div className="flex self-start  ml-[15px] mt-[6px]">
+                <div className="flex self-start  ml-[15px] mt-[8px]">
                     <h1 className=" text-[#334155] text-[13px]  ">Já possui uma conta? </h1>
                     <Link href='/login' className="ml-[4px] text-[#3A7FF9] text-[13px] cursor-pointer"> Entre agora</Link>
                 </div>
