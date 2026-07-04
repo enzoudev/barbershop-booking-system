@@ -1,4 +1,4 @@
-export async function authenticateUser(email: String, password: String) {
+export async function authenticateUser(email: string, password: string) {
     try {
         const res = await fetch('/api/login', {
             method: 'POST',
