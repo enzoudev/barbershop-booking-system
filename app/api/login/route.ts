@@ -28,7 +28,7 @@ export async function POST( req: Request) {
     }
 
     const token = jwt.sign(
-        {id: usuario.id, email: usuario.email},
+        {id: usuario.id, email: usuario.email, nome: usuario.name},
         process.env.JWT_SECRET!,
         {expiresIn: '24h'}
     )
@@ -37,7 +37,7 @@ export async function POST( req: Request) {
         {
             message: 'Login realizado com sucesso!',
             token: token,
-            usuario: {id: usuario.id, nome: usuario.name, email: usuario.email}
+            usuario: {id: usuario.id, name: usuario.name, email: usuario.email}
         }
         , {status: 200}
         
