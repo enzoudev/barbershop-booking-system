@@ -30,7 +30,7 @@ export default function Scheduling() {
 
     return (
         
-    <div>
+    <div className="min-h-screen flex flex-col items-center">
         <NavBar/>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
