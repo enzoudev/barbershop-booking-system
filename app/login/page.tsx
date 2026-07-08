@@ -5,9 +5,11 @@ import { EnvelopeSimpleIcon, EyeIcon } from "@phosphor-icons/react"
 import { useState, useEffect } from "react"
 import {Spinner} from '@/lib/spinner'
 import { authenticateUser } from "@/services/authService"
+import { useRouter } from 'next/navigation';
 
 
 export default function LoginForm() {
+    const router = useRouter();
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
@@ -26,7 +28,12 @@ export default function LoginForm() {
         setLoading(true);
         try {
             const data = await authenticateUser(email, password)
+            console.log("O NOME ESTÁ AQUI?", data.usuario.name);
+            localStorage.setItem("authToken", data.token);
+            localStorage.setItem("userName", String(data.usuario.name));
+            window.dispatchEvent(new Event("login-update"));
             console.log("Sucesso", data)
+            router.push('/');
         } catch(err) {
           setWarn("Erro ao autenticar. Verifique suas credenciais.");
           setVal(true)  
