@@ -2,6 +2,7 @@
 import { NavBar } from "@/components/common/NavBar";
 import { div } from "framer-motion/client";
 
+
 import { useState, useEffect } from 'react'
 
 
@@ -33,7 +34,7 @@ export default function Scheduling() {
     <div className="min-h-screen flex flex-col items-center">
         <NavBar/>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10">
+        <div className="w-full flex justify-center p-10 gap-[20px]">
             {barbeiros.map((barbeiro: any) => (
                 <div key={barbeiro.id} className="bg-white p-6 rounded-xl shadow-lg border border-gray-100 flex flex-col items-center">
                     <img 
@@ -42,7 +43,7 @@ export default function Scheduling() {
                         className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-100"
                     />
                     <h3 className="text-xl font-bold text-gray-800">{barbeiro.name}</h3>
-                    <button className="mt-4 bg-[#181818] text-white py-2 px-6 rounded-lg hover:bg-black transition">
+                    <button className="mt-4 bg-[#181818] text-white py-2 px-6 rounded-lg hover:bg-black transition cursor-pointer">
                         Agendar
                     </button>
                 </div>
