@@ -51,7 +51,7 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
           <h1 className={`cursor-pointer text-sm ${hoverNav === "quem" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("quem")} onMouseLeave={() => setHoverNav(null)}>Quem somos nós?</h1>
           <h1 className={`cursor-pointer text-sm ${hoverNav === "barbeiros" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("barbeiros")} onMouseLeave={() => setHoverNav(null)}>Barbeiros</h1>
           <h1 className={`cursor-pointer text-sm ${hoverNav === "planos" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("planos")} onMouseLeave={() => setHoverNav(null)} >Planos</h1>
-          { userName && (<h1 className={`cursor-pointer text-sm ${hoverNav === "agendar" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("agendar")} onMouseLeave={() => setHoverNav(null)} >Agendar</h1>)}
+          { userName && (<Link href={'/scheduling'} className={`cursor-pointer text-sm ${hoverNav === "agendar" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("agendar")} onMouseLeave={() => setHoverNav(null)} >Agendar</Link>)}
         </div>
       </div>
 
