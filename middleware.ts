@@ -4,8 +4,11 @@ import { jwtVerify } from "jose";
 
 export async function middleware(req: NextRequest)  {
     const token = req.cookies.get('token')?.value;
+    const path = req.nextUrl.pathname;
 
-    const protectedRoutes = ['/perfil', '/dashboard'];
+
+
+    const protectedRoutes = ['/perfil', '/dashboard','/schedules', '/scheduling'];
 
     const isProtectedRoute = protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route));
     if(isProtectedRoute) {
