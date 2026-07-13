@@ -37,11 +37,12 @@ export default function Schedules() {
         
         <div  className="min-h-screen flex flex-col items-center">
             <NavBar/>
-            <div className="w-full flex justify-center p-10 gap-[20px]">
+            <div className="w-full flex justify-center p-10 gap-[20px] bg-[#3b82f6]">
             {days.map((day) => {
                 const isSelected = selectedDate === day.dataISO;
                 
                 return (
+                
                     <div 
                         key={day.dataISO} 
                         onClick={() => {
