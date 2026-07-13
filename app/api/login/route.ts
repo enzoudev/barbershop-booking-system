@@ -33,7 +33,7 @@ export async function POST( req: Request) {
         {expiresIn: '24h'}
     )
 
-    return NextResponse.json(
+    const response =  NextResponse.json(
         {
             message: 'Login realizado com sucesso!',
             token: token,
@@ -43,6 +43,16 @@ export async function POST( req: Request) {
         
     )
 
+    response.cookies.set('token', token, {
+    httpOnly: true, 
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/', 
+    maxAge: 60 * 60 * 24 
+    });
+
+    return response;
+    
         } catch(error) {
             console.error('Erro na API de login:', error)
             return NextResponse.json(
