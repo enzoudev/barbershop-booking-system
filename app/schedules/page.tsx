@@ -17,24 +17,30 @@ export default function Schedules() {
     const [modal, setIsModalOpen] = useState(false)
     const [days] = useState(generateDays());
     const [loading, setLoading] = useState(false);
-    const [busy, setBusy] = useState<string[]>([])
+    const [busy, setBusy] = useState<string[]>([]);
     const [sucess, setSucess] = useState(false)
     const [hour, setHours] = useState([])
     const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
 
     useEffect(() => {
-    if(selectedDate && barberId) {
-        setLoading(true)
-        fetch(`/api/appointments?date=${selectedDate}&id_barber=${barberId}`)
-            .then(res => res.json())
-            .then(data => {
-                setBusy(data)
-                setSucess(true);
-            })
-        .catch(err => console.error("Erro:", err))
-        .finally(() => setLoading(false));
+        async function fetchHours() {
+            if(!selectedDate || !barberId) return;
+
+            setLoading(true);
             
-    } 
+            try {
+                const res = await fetch(`/api/appointments?date=${selectedDate}&id_barber=${barberId}`);
+                const data = await res.json();
+
+                setBusy(data)
+                setSucess(true)
+            } catch(err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+     fetchHours()
         }, [selectedDate, barberId]);
     
     if(loading) return <Spinner/>
@@ -75,20 +81,25 @@ export default function Schedules() {
             </div>
 
             {sucess && (
-                <div>
+                <div className="flex justify-center p-6">
+                    <div className="w-full max-w-sm bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                    <h2 className="text-center font-semibold mb-4 text-gray-700">Escolha o horário</h2>
+                    <div className="grid grid-cols-3 gap-3">
                     {timeJob.map((time) => {
-                        const isOcupado = busy.includes(time);
+                        const isOcupado = Array.isArray(busy) && busy.includes(time)
                         
                         return (
                             <button 
                                 key={time} 
                                 disabled={isOcupado}
-                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'}`}
+                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'} text-[#0C0C09] ${isOcupado ? 'cursor-none' : 'cursor-pointer'}`}
                             >
                                 {time}
                             </button>
                         );
                     })}
+                    </div>
+                    </div>
                 </div>
             )}
         </div>
