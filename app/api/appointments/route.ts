@@ -26,10 +26,7 @@ export async function GET(req: NextRequest) {
     const ocupados = rows.map(row => formatTime(row.date_time));
 
 
-    const available = timeJob.filter(h => !ocupados.includes(h));
-    if(available.length === 0) {
-        return NextResponse.json( {message: "Todos os horários estão ocupados!"});
-    }
+
 
     return NextResponse.json(ocupados)
     } catch(err) {
