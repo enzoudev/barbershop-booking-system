@@ -6,7 +6,7 @@ export async function authenticateUser(email: string, password: string) {
             body: JSON.stringify({email, password}),
         });
 
-        // Adicione isso para debugar o erro da sua API
+
         if (!res.ok) {
             const errorData = await res.json();
             console.error("Erro retornado pela API:", errorData);
