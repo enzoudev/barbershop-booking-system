@@ -5,6 +5,7 @@ import generateDays from "@/lib/dayWeek";
 import { useSearchParams } from 'next/navigation';
 import { div, h1 } from "framer-motion/client";
 import { NavBar } from "@/components/common/NavBar";
+import { Spinner } from "@/lib/spinner";
 
 
 
@@ -15,23 +16,28 @@ export default function Schedules() {
     const [selectedDate, setSelectedDate] = useState <string | null >(null)
     const [modal, setIsModalOpen] = useState(false)
     const [days] = useState(generateDays());
-    const [loading, setLoading] = useState(true);
-    const [horarios, setHorarios] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
+    const [busy, setBusy] = useState<string[]>([])
+    const [sucess, setSucess] = useState(false)
+    const [hour, setHours] = useState([])
+    const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
 
-    useEffect(()=> {
-        async function fetchTime() {
-            try {
-                const res = await fetch('/api/appointments');
-                const data = await res.json()
-            } catch(err) {
-               console.error('Erro ao acessar API: ', err) 
-            } finally {
-                setLoading(false)
-            }
-        }
-
-        fetchTime()
-    }, [])
+    useEffect(() => {
+    if(selectedDate && barberId) {
+        setLoading(true)
+        fetch(`/api/appointments?date=${selectedDate}&id_barber=${barberId}`)
+            .then(res => res.json())
+            .then(data => {
+                setBusy(data)
+                setSucess(true);
+            })
+        .catch(err => console.error("Erro:", err))
+        .finally(() => setLoading(false));
+            
+    } 
+        }, [selectedDate, barberId]);
+    
+    if(loading) return <Spinner/>
 
     return (
         
@@ -67,6 +73,24 @@ export default function Schedules() {
                 );
             })}
             </div>
+
+            {sucess && (
+                <div>
+                    {timeJob.map((time) => {
+                        const isOcupado = busy.includes(time);
+                        
+                        return (
+                            <button 
+                                key={time} 
+                                disabled={isOcupado}
+                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'}`}
+                            >
+                                {time}
+                            </button>
+                        );
+                    })}
+                </div>
+            )}
         </div>
     )
 }
