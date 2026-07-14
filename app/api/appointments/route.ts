@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
         const { searchParams } = new URL(req.url);
 
 
-        const date = searchParams.get('date'); // Data que o cliente quer consultar
+        const date = searchParams.get('date'); 
         const id_barber = searchParams.get('id_barber');
 
     if (!date || !id_barber) {
