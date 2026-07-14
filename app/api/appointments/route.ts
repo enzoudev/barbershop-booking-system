@@ -25,12 +25,13 @@ export async function GET(req: NextRequest) {
     const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
     const ocupados = rows.map(row => formatTime(row.date_time));
 
+
     const available = timeJob.filter(h => !ocupados.includes(h));
     if(available.length === 0) {
         return NextResponse.json( {message: "Todos os horários estão ocupados!"});
     }
 
-    return NextResponse.json(available)
+    return NextResponse.json(ocupados)
     } catch(err) {
         console.error("Erro na API: ", err)
         return NextResponse.json( {error: "Erro na API"}, {status:500})
