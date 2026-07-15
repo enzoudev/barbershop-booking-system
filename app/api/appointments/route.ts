@@ -45,15 +45,18 @@ export async function POST(req: NextRequest) {
     try {
         const token = req.cookies.get('token')?.value;
         if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
-        const userId = await getUserFromToken(token);
+        const user = await getUserFromToken(token);
 
+        if(!user) {
+            return NextResponse.json( {message: "Usuário inválido"}, {status:400})
+        }
 
         const body = await req.json();
-        const {id_service, date_time, id_barber} = body;
+        const {date_time, id_barber} = body;
 
 
-        if(!id_service || !date_time) {
-            return NextResponse.json( {error: "Algum campo obrigatório não está preenchido"}, {status:400});
+        if(!id_barber|| !date_time) {
+            return NextResponse.json( {error: "Algum campo obrigatório não está preenchido"}, {status:401});
         }
 
         const checkExist = await pool.query(
@@ -65,7 +68,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Este horário já foi reservado!" }, { status: 409 });
         }
 
-        await pool.query("INSERT INTO appointments (id_user, id_service, date_time, id_barber) VALUES  ($1, $2, $3, $4)",[userId, id_service, date_time, id_barber])
+        await pool.query("INSERT INTO appointments (id_user, date_time, id_barber) VALUES  ($1, $2, $3)",[user.id, date_time, id_barber])
 
         return NextResponse.json( {message: "Agendamento criado com sucesso!"}, {status:201})
     } catch(err) {
