@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { div, h1 } from "framer-motion/client";
 import { NavBar } from "@/components/common/NavBar";
 import { Spinner } from "@/lib/spinner";
+import { reservationService } from "@/services/reservationService";
 
 
 
@@ -13,14 +14,33 @@ export default function Schedules() {
     
     const searchParams = useSearchParams();
     const barberId = searchParams.get('barber');
+    const barberIdNum = barberId ? parseInt(barberId, 10) : 0;
     const [selectedDate, setSelectedDate] = useState <string | null >(null)
     const [modal, setIsModalOpen] = useState(false)
     const [days] = useState(generateDays());
     const [loading, setLoading] = useState(false);
     const [busy, setBusy] = useState<string[]>([]);
     const [sucess, setSucess] = useState(false)
-    const [hour, setHours] = useState([])
+    const [hour, setHours] = useState('')
     const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+
+    const handleReservation = async () => {
+
+        if(barberIdNum === 0) {
+            return console.error('Barbeiro inválido')
+        }
+
+        if (selectedDate === null || !hour) {
+        alert("Selecione uma data e um horário!");
+        return; 
+    }
+        try {
+            const data = await reservationService(barberIdNum, selectedDate, hour);
+            console.log('Sucesso! Horário reservado')
+        } catch (err) {
+            console.error("Erro na API:", err)
+        }
+    }
 
     useEffect(() => {
         async function fetchHours() {
@@ -41,7 +61,9 @@ export default function Schedules() {
             }
         }
      fetchHours()
-        }, [selectedDate, barberId]);
+        }, [selectedDate, barberIdNum]);
+
+    
     
     if(loading) return <Spinner/>
 
@@ -59,6 +81,8 @@ export default function Schedules() {
                         key={day.dataISO} 
                         onClick={() => {
                             setSelectedDate(day.dataISO);
+                            setSucess(false);
+                            setBusy([]);
                             setIsModalOpen(true);
                         }}
                         className={`
@@ -92,13 +116,15 @@ export default function Schedules() {
                             <button 
                                 key={time} 
                                 disabled={isOcupado}
-                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'} text-[#0C0C09] ${isOcupado ? 'cursor-none' : 'cursor-pointer'}`}
+                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'} text-[#0C0C09] ${isOcupado ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                onClick={() => setHours(time)}
                             >
                                 {time}
                             </button>
                         );
                     })}
                     </div>
+                    <button onClick={() => handleReservation()}>Confirmar</button>
                     </div>
                 </div>
             )}
