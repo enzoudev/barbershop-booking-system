@@ -7,11 +7,12 @@ import { div, h1 } from "framer-motion/client";
 import { NavBar } from "@/components/common/NavBar";
 import { Spinner } from "@/lib/spinner";
 import { reservationService } from "@/services/reservationService";
+import { useRouter } from "next/router";
 
 
 
 export default function Schedules() {
-    
+    const router = useRouter()
     const searchParams = useSearchParams();
     const barberId = searchParams.get('barber');
     const barberIdNum = barberId ? parseInt(barberId, 10) : 0;
@@ -37,6 +38,7 @@ export default function Schedules() {
         try {
             const data = await reservationService(barberIdNum, selectedDate, hour);
             console.log('Sucesso! Horário reservado')
+            router.push('/home-page')
         } catch (err) {
             console.error("Erro na API:", err)
         }
