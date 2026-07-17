@@ -15,7 +15,7 @@ export default function Schedules() {
     const router = useRouter()
     const searchParams = useSearchParams();
     const barberId = searchParams.get('barber');
-    const barberIdNum = barberId && !isNaN(parseInt(barberId, 10)) ? parseInt(barberId, 10) : 0;
+    const [barberIdNum, setBarberIdNum] = useState<number>(0);
     const [selectedDate, setSelectedDate] = useState <string | null >(null);
     const [modal, setIsModalOpen] = useState(false);
     const [days] = useState(generateDays());
@@ -27,6 +27,14 @@ export default function Schedules() {
     const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
 
 
+    useEffect(() => {
+    if (barberId) {
+        const parsedId = parseInt(barberId, 10);
+        if (!isNaN(parsedId)) {
+            setBarberIdNum(parsedId);
+        }
+    }
+    }, [searchParams]);
 
     const handleReservation = async () => {
 
