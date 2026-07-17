@@ -7,7 +7,7 @@ import { div, h1 } from "framer-motion/client";
 import { NavBar } from "@/components/common/NavBar";
 import { Spinner } from "@/lib/spinner";
 import { reservationService } from "@/services/reservationService";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation';
 
 
 
@@ -15,15 +15,18 @@ export default function Schedules() {
     const router = useRouter()
     const searchParams = useSearchParams();
     const barberId = searchParams.get('barber');
-    const barberIdNum = barberId ? parseInt(barberId, 10) : 0;
-    const [selectedDate, setSelectedDate] = useState <string | null >(null)
-    const [modal, setIsModalOpen] = useState(false)
+    const barberIdNum = barberId && !isNaN(parseInt(barberId, 10)) ? parseInt(barberId, 10) : 0;
+    const [selectedDate, setSelectedDate] = useState <string | null >(null);
+    const [modal, setIsModalOpen] = useState(false);
     const [days] = useState(generateDays());
     const [loading, setLoading] = useState(false);
     const [busy, setBusy] = useState<string[]>([]);
-    const [sucess, setSucess] = useState(false)
-    const [hour, setHours] = useState('')
+    const [sucess, setSucess] = useState(false);
+    const [hour, setHours] = useState('');
+    const [color, setColor] = useState('bg-white');
     const timeJob = ["08:00","09:00", "10:00", "11:00", "12:00", "14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+
+
 
     const handleReservation = async () => {
 
@@ -38,7 +41,7 @@ export default function Schedules() {
         try {
             const data = await reservationService(barberIdNum, selectedDate, hour);
             console.log('Sucesso! Horário reservado')
-            router.push('/home-page')
+            router.push('/')
         } catch (err) {
             console.error("Erro na API:", err)
         }
@@ -51,7 +54,7 @@ export default function Schedules() {
             setLoading(true);
             
             try {
-                const res = await fetch(`/api/appointments?date=${selectedDate}&id_barber=${barberId}`);
+                const res = await fetch(`/api/appointments?date=${selectedDate}&id_barber=${barberIdNum}`);
                 const data = await res.json();
 
                 setBusy(data)
@@ -67,7 +70,11 @@ export default function Schedules() {
 
     
     
-    if(loading) return <Spinner/>
+    if(loading) return (
+    <div>
+        <NavBar/>
+        <Spinner/> 
+    </div>)
 
     return (
         
@@ -113,20 +120,21 @@ export default function Schedules() {
                     <div className="grid grid-cols-3 gap-3">
                     {timeJob.map((time) => {
                         const isOcupado = Array.isArray(busy) && busy.includes(time)
+                        const isSelected = hour === time;
                         
                         return (
                             <button 
                                 key={time} 
                                 disabled={isOcupado}
-                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : 'bg-white'} text-[#0C0C09] ${isOcupado ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-                                onClick={() => setHours(time)}
+                                className={`p-4 border rounded ${isOcupado ? 'bg-red-500' : isSelected ? 'bg-gray-200' : 'bg-white'} text-[#0C0C09] ${isOcupado ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+                                onClick={() => setHours(time) }
                             >
                                 {time}
                             </button>
                         );
                     })}
                     </div>
-                    <button onClick={() => handleReservation()}>Confirmar</button>
+                    <button onClick={() =>  handleReservation()} className="w-full mt-4 p-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition">Confirmar</button>
                     </div>
                 </div>
             )}
