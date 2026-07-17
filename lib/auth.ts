@@ -6,10 +6,11 @@ export async function getUserFromToken(token: string) {
         
         const { payload } = await jwtVerify(token, secret);
         
-
+        console.log("Conteúdo completo do payload JWT:", payload);
         return { 
             id: payload.id as string, 
-            name: payload.name as string 
+            email: payload.email as string, 
+            nome: payload.nome as string
         }; 
     } catch {
         return null;
