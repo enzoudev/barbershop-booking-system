@@ -8,9 +8,10 @@ export async function reservationService(id_barber: number, date: string, time: 
             headers: {
             'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
                 date_time: dataCompleta.toISOString(),
-                id_barber: id_barber
+                id_barber: Number(id_barber)
             })
         })
 
