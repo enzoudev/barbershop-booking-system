@@ -46,21 +46,20 @@ export async function POST(req: NextRequest) {
         const token = req.cookies.get('token')?.value;
         if (!token) return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
         const user = await getUserFromToken(token);
-
-        if(!user) {
-            return NextResponse.json( {message: "Usuário inválido"}, {status:400})
-        }
-
+        console.log("O que o getUserFromToken retornou:", user);
         const body = await req.json();
         const {date_time, id_barber} = body;
 
-
+        if (!user) {
+        return NextResponse.json({ message: "Usuário inválido ou não encontrado" }, { status: 400 });
+        }
+        
         if(!id_barber|| !date_time) {
             return NextResponse.json( {error: "Algum campo obrigatório não está preenchido"}, {status:401});
         }
 
         const checkExist = await pool.query(
-        "SELECT id FROM appointments WHERE date_time = $1 AND id_barber = $2",
+        "SELECT * FROM appointments WHERE date_time = $1 AND id_barber = $2",
         [date_time, id_barber]
         );
 
@@ -71,8 +70,8 @@ export async function POST(req: NextRequest) {
         await pool.query("INSERT INTO appointments (id_user, date_time, id_barber) VALUES  ($1, $2, $3)",[user.id, date_time, id_barber])
 
         return NextResponse.json( {message: "Agendamento criado com sucesso!"}, {status:201})
-    } catch(err) {
+    } catch(err: any) {
         console.error("Erro na API:", err)
-        return NextResponse.json( {error: "Erro na API"}, {status: 500})
+        return NextResponse.json({ error: err.message }, { status: 500 });
     }
 }
