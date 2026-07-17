@@ -26,12 +26,14 @@ export async function POST( req: Request) {
     if(!passwordMatch) {
         return NextResponse.json( {error: 'Senha incorreta.'}, {status: 401})
     }
-
+    console.log("Gerando token com ID:", usuario.id_user);
     const token = jwt.sign(
-        {id: usuario.id, email: usuario.email, nome: usuario.name},
-        process.env.JWT_SECRET!,
-        {expiresIn: '24h'}
-    )
+    { id: usuario.id_user, email: usuario.email, nome: usuario.name }, // Adicione o 'id' aqui
+    process.env.JWT_SECRET!,
+    { expiresIn: '24h' }
+    );
+
+    
 
     const response =  NextResponse.json(
         {
