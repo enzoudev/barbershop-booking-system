@@ -48,7 +48,7 @@ export default function Scheduling() {
                         className="w-32 h-32 rounded-full object-cover mb-4 border-4 border-gray-100"
                     />
                     <h3 className="text-xl font-bold text-gray-800">{barbeiro.name}</h3>
-                    <button className="mt-4 bg-[#181818] text-white py-2 px-6 rounded-lg hover:bg-black transition cursor-pointer" onClick={() => { console.log("ID do barbeiro:", barbeiro.id_barber); { router.push(`/schedules?barber=${barbeiro.id}`)}}}>
+                    <button className="mt-4 bg-[#181818] text-white py-2 px-6 rounded-lg hover:bg-black transition cursor-pointer" onClick={() => { console.log("ID do barbeiro:", barbeiro.id_barber); { router.push(`/schedules?barber=${barbeiro.id_barber}`)}}}>
                         Agendar
                     </button>
                 </div>
