@@ -57,7 +57,7 @@ export default function LoginForm() {
                 <div className="input-conteiner flex flex-col gap-[15px] w-full px-16">
                     
                     <div className="relative w-full">
-                        {/* O label posicionado exatamente no topo da borda */}
+                       
                         <label className="absolute -top-2.5 left-3 bg-white px-1 text-xs text-gray-500">
                             E-mail
                         </label>
@@ -65,7 +65,7 @@ export default function LoginForm() {
 
 
                         <button 
-                            type="button" // OBRIGATÓRIO: isso evita o refresh
+                            type="button" 
                             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
                             onClick={(e) => e.preventDefault()}
                         >
@@ -83,7 +83,7 @@ export default function LoginForm() {
                     </div>
 
                     <div className="relative w-full">
-                        {/* O label posicionado exatamente no topo da borda */}
+                        
                         <label className="absolute -top-2.5 left-3 bg-white px-1 text-xs text-gray-500">
                             Senha
                         </label>
