@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getUserFromToken } from '@/lib/auth';
 import { useState, useEffect } from 'react'
 import { UserIcon } from '@phosphor-icons/react';
+import { hover } from 'framer-motion';
 
 export function NavBar() {
 
@@ -11,6 +12,7 @@ const [bgLogin, setbgLogin] = useState(false);
 const [hoverNav, setHoverNav] = useState<string | null>("gold");
 const [userName, setUserName] = useState<string | null>(null);
 const [isMounted, setIsMounted] = useState(false);
+
 
 useEffect(() => {
   function updateUserName() {
@@ -70,13 +72,19 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
         </Link>
       ) : 
 
-      (<div className='flex flex-col gap-[4px] items-center'>
-        
-      
-      <UserIcon className='text-gray-400' size={15} />
-      <p className='text-sm text-gray-400'>{userName}</p>
-      </div> 
-      )
+        <button 
+          className="flex gap-[4px] items-center group"
+        >
+          <UserIcon 
+            className={`text-gray-400 group-hover:text-black ${customColor}`} 
+            size={15} 
+          />
+          <p 
+            className={`text-sm text-gray-400 group-hover:text-black ${customColor}`}
+          >
+            {userName}
+          </p>
+        </button>
 
       }
 
