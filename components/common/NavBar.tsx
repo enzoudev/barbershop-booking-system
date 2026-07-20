@@ -5,6 +5,8 @@ import { getUserFromToken } from '@/lib/auth';
 import { useState, useEffect } from 'react'
 import { UserIcon } from '@phosphor-icons/react';
 import { hover } from 'framer-motion';
+import { div } from 'framer-motion/m';
+import UserDropdown from './UserDropdown';
 
 export function NavBar() {
 
@@ -12,6 +14,7 @@ const [bgLogin, setbgLogin] = useState(false);
 const [hoverNav, setHoverNav] = useState<string | null>("gold");
 const [userName, setUserName] = useState<string | null>(null);
 const [isMounted, setIsMounted] = useState(false);
+const [isOpen,  setIsOpen] = useState(false);
 
 
 useEffect(() => {
@@ -71,9 +74,10 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
             Login
         </Link>
       ) : 
-
+      <div className="relative">
         <button 
           className="flex gap-[4px] items-center group"
+          onClick={() => setIsOpen(!isOpen)}
         >
           <UserIcon 
             className={`text-gray-400 group-hover:text-black ${customColor}`} 
@@ -86,6 +90,12 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
           </p>
         </button>
 
+        { isOpen && (
+          <UserDropdown isOpen = {isOpen} onClose = {() => setIsOpen(false)}/>
+        )
+
+        }
+      </div>
       }
 
 
