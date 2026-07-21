@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from "next/image";
 import { getUserFromToken } from '@/lib/auth';
 import { useState, useEffect } from 'react'
-import { UserIcon } from '@phosphor-icons/react';
+import { UserIcon, ArrowCircleDownIcon} from '@phosphor-icons/react';
 import { hover } from 'framer-motion';
 import { div } from 'framer-motion/m';
 import UserDropdown from './UserDropdown';
@@ -15,6 +15,7 @@ const [hoverNav, setHoverNav] = useState<string | null>("gold");
 const [userName, setUserName] = useState<string | null>(null);
 const [isMounted, setIsMounted] = useState(false);
 const [isOpen,  setIsOpen] = useState(false);
+const [isMouse, setIsMouse] = useState(false);
 
 
 useEffect(() => {
@@ -24,6 +25,9 @@ useEffect(() => {
       console.log("Valor lido do localStorage:", name);
       if (name) {
         setUserName(name.split(" ")[0]); 
+      }
+      if(!name) {
+        setUserName(null)
       }
     }
 
@@ -68,30 +72,32 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
                 <Link 
             href="/login"
             className={`text-sm text-[#243741] flex justify-center items-center w-20 h-10 transition-colors duration-200 rounded-md cursor-pointer border border-gray-300 ${bgLogin ? "bg-[#e5e5d5]" : "bg-white"}`}
-            onMouseEnter={() => setbgLogin(true)}
-            onMouseLeave={() => setbgLogin(false)}
         >
             Login
         </Link>
       ) : 
-      <div className="relative">
+      <div className="relative "
+      onMouseEnter={() => setIsOpen(true)} 
+      onMouseLeave={() => setIsOpen(false)}>
         <button 
-          className="flex gap-[4px] items-center group"
-          onClick={() => setIsOpen(!isOpen)}
+          className="flex gap-[4px] items-center group cursor-pointer"
+          
         >
           <UserIcon 
             className={`text-gray-400 group-hover:text-black ${customColor}`} 
-            size={15} 
+            size={15}
+            onMouseEnter={() => setIsOpen(true)} 
           />
           <p 
             className={`text-sm text-gray-400 group-hover:text-black ${customColor}`}
-          >
+            onMouseEnter={() => setIsOpen(true)}
+            >
             {userName}
           </p>
         </button>
 
         { isOpen && (
-          <UserDropdown isOpen = {isOpen} onClose = {() => setIsOpen(false)}/>
+          <UserDropdown isOpen = {() => setIsOpen(true)} onClose = {() => setIsOpen(false)}/>
         )
 
         }
