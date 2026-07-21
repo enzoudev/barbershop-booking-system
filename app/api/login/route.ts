@@ -28,7 +28,7 @@ export async function POST( req: Request) {
     }
     console.log("Gerando token com ID:", usuario.id_user);
     const token = jwt.sign(
-    { id: usuario.id_user, email: usuario.email, nome: usuario.name }, // Adicione o 'id' aqui
+    { id: usuario.id_user, email: usuario.email, nome: usuario.name, role: usuario.role }, // Adicione o 'id' aqui
     process.env.JWT_SECRET!,
     { expiresIn: '24h' }
     );
