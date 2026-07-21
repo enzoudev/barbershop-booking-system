@@ -14,7 +14,7 @@ export default async function GET(req: NextRequest){
             return NextResponse.json( {error: 'Usuário não logado'}, {status: 401});
         }
 
-        const { rows } = await pool.query('SELECT created_at, date_time FROM APPOINTMENTS WHERE id_user = $1', [user.id]);
+        const { rows } = await pool.query('SELECT status_appoint, id_appointments, created_at, date_time FROM APPOINTMENTS WHERE id_user = $1', [user.id]);
 
         if(rows.length === 0) {
             return NextResponse.json( {message: 'Nenhum agendamento feito!'}, {status: 400});
