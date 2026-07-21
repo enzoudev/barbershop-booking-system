@@ -6,7 +6,7 @@ import { useState } from 'react'
 export function Plans() {
     const [hoverCard, setHoverCard] = useState<string | null>("plan-gold");
     return (
-        <div className="h-500 flex flex-col bg-[#181818] w-full items-center ">
+        <div className="h-250 flex flex-col bg-[#181818] w-full items-center ">
             <h1 className="text-[50px] font-black text-white mb-8 tracking-tight mt-20 text-center">Planos</h1>
 
             <p className="text-gray-400 text-lg max-w-lg">
