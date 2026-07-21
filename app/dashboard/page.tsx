@@ -3,15 +3,18 @@
 import { div } from "framer-motion/m";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { getUserFromToken } from "@/lib/auth";
+import { Spinner } from "@/lib/spinner";
 
 
 
 
 export default function DashboardPage() {
     const [appoint, setAppoint] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [statusFilter, useStatusFilter] = useState("");
+    const [loading, setLoading] = useState(true)
+    const [statusFilter, setStatusFilter] = useState("");
     const [orderFilter, setOrderFilter] = useState("desc");
+
 
 
     function formatDate(dateOri: string) {
@@ -42,6 +45,26 @@ export default function DashboardPage() {
     }
     getAppoint();
     },[])
+
+
+    if (loading) {
+    return (
+        <div className="flex h-screen w-screen items-center justify-center bg-slate-50">
+            <Spinner />
+        </div>
+    )
+    }
+
+
+    if (!Array.isArray(appoint)) {
+    return (
+        <div className="flex h-screen flex-col items-center justify-center text-slate-800 gap-4 bg-[#181818]">
+            <h1 className="text-2xl font-bold text-red-600">Acesso Negado</h1>
+            <p className="text-white">Você não tem permissão para acessar o painel administrativo.</p>
+            <Link href="/" className="bg-indigo-600 text-white px-4 py-2 rounded-lg">Voltar para o início</Link>
+        </div>
+    );
+    }
 
     return (
         <div className="flex h-screen bg-slate-50 text-slate-800">
@@ -86,14 +109,18 @@ export default function DashboardPage() {
                     <h2 className="text-xl font-bold text-slate-900 mb-4">Lista de agendamentos</h2>
 
                     <div className="flex gap-4">
-                        <select className="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600">
+                        <select className="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600"
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}>
                             <option value="">Todos os status</option>
                             <option value="ativo">Ativo</option>
                             <option value="concluido">Concluído</option>
                             <option value="cancelado">Cancelado</option>
                         </select>
 
-                        <select className="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600">
+                        <select className="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-600"
+                        value={orderFilter}
+                        onChange={(e) => setOrderFilter(e.target.value)}>
                             <option value="desc">Mais recentes</option>
                             <option value="asc">Mais antigos</option>
                         </select>
