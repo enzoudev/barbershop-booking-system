@@ -10,7 +10,8 @@ export async function getUserFromToken(token: string) {
         return { 
             id: payload.id as string, 
             email: payload.email as string, 
-            nome: payload.nome as string
+            nome: payload.nome as string,
+            role: payload.role as string
         }; 
     } catch {
         return null;
