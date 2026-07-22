@@ -1,45 +1,120 @@
-# Barbershop Booking System
+# 💈 Barbershop Booking System
 
-Este projeto é um sistema completo de agendamento de serviços para barbearia, permitindo que clientes marquem horários e que administradores gerenciem o fluxo de atendimentos de forma dinâmica através de um painel de controle seguro e intuitivo.
+Sistema completo de agendamento para barbearias, permitindo que clientes realizem reservas de horários e que administradores gerenciem todos os atendimentos através de um painel seguro, intuitivo e responsivo.
+
+---
 
 ## 🚧 Status do Projeto
 
-Concluído / Em fase de aprimoramento final.
+✅ Concluído *(em fase de aprimoramentos finais)*
 
-## ✨ Funcionalidades Implementadas
+---
 
-* **Autenticação e Controle de Acesso:** Sistema de login seguro com tokens e validação de rotas para administradores (Role-based access).
-* **Painel Administrativo (Dashboard):** Visualização completa da listagem de agendamentos.
-* **Filtros Dinâmicos e Ordenação:** Filtragem por status dos agendamentos (Ativo, Concluído, Cancelado) e ordenação por data utilizando Query Parameters na URL.
-* **Gerenciamento de Status:** Capacidade para o administrador alterar o status de um agendamento diretamente pela interface (com rotas de API em método `PATCH` e atualização automática da tabela).
-* **Design Responsivo:** Interface moderna desenvolvida com Tailwind CSS e componentes customizados.
+## ✨ Funcionalidades
 
-## 🛠 Tecnologias Utilizadas
+- 🔐 **Autenticação e Controle de Acesso**
+  - Login seguro utilizando JWT e Cookies.
+  - Proteção de rotas.
+  - Controle de acesso baseado em permissões (Role-Based Access).
 
-* **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS, Phosphor Icons.
-* **Backend:** Next.js API Routes (Serverless).
-* **Banco de Dados & Infraestrutura:** PostgreSQL (hospedado na Aiven com conexão SSL segura via Pool).
-* **Autenticação:** Cookies seguros e JWT.
+- 📊 **Painel Administrativo**
+  - Visualização de todos os agendamentos.
+  - Interface intuitiva para gerenciamento dos atendimentos.
 
-## 🚀 Como rodar o projeto
+- 🔍 **Filtros e Ordenação**
+  - Filtragem por status:
+    - Ativo
+    - Concluído
+    - Cancelado
+  - Ordenação por data através de Query Parameters na URL.
 
+- ✏️ **Gerenciamento de Agendamentos**
+  - Alteração do status de um agendamento diretamente pelo painel.
+  - Atualização automática da interface após alterações.
+  - API utilizando o método `PATCH`.
 
-1. Clone o repositório:
-   ```bash
-   git clone <url-do-repositorio>
-Instale as dependências:
+- 📱 **Design Responsivo**
+  - Interface moderna desenvolvida com Tailwind CSS.
+  - Componentes reutilizáveis.
+  - Layout adaptado para dispositivos móveis.
 
+---
 
+## 🛠️ Tecnologias Utilizadas
+
+### Frontend
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Phosphor Icons
+
+### Backend
+- Next.js API Routes (Serverless)
+
+### Banco de Dados
+- PostgreSQL
+- Aiven Cloud
+- SSL Connection Pool
+
+### Autenticação
+- JWT
+- Cookies Seguros
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1. Clone o repositório
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+```
+
+### 2. Acesse a pasta do projeto
+
+```bash
+cd nome-do-projeto
+```
+
+### 3. Instale as dependências
+
+```bash
 npm install
-Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto com as credenciais do seu banco de dados e chaves de segurança.
+```
 
-Execute o projeto em ambiente de desenvolvimento:
+### 4. Configure as variáveis de ambiente
 
+Crie um arquivo `.env` na raiz do projeto contendo as credenciais do banco de dados e as chaves de autenticação.
 
+Exemplo:
+
+```env
+DATABASE_URL=...
+JWT_SECRET=...
+```
+
+### 5. Execute o projeto
+
+```bash
 npm run dev
-Acesse http://localhost:3000 no seu navegador.
+```
 
-🤝 Contribuições
-Contribuições são muito bem-vindas! Sinta-se à vontade para abrir uma issue para relatar bugs ou sugerir melhorias.
+A aplicação estará disponível em:
 
-Desenvolvido por Enzo.
+```
+http://localhost:3000
+```
+
+---
+
+## 🤝 Contribuições
+
+Contribuições são sempre bem-vindas!
+
+Caso encontre algum problema ou tenha sugestões de melhorias, fique à vontade para abrir uma **Issue** ou enviar um **Pull Request**.
+
+---
+
+## 👨‍💻 Autor
+
+Desenvolvido por **Enzo**.
