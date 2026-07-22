@@ -3,19 +3,22 @@
 import { div } from "framer-motion/m";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { CheckCircleIcon, ProhibitInsetIcon } from "@phosphor-icons/react"
 import { getUserFromToken } from "@/lib/auth";
 import { Spinner } from "@/lib/spinner";
+import {changeStatusService} from '@/services-admin/changeStatus'
 
 
 
 
 export default function DashboardPage() {
-    const [appoint, setAppoint] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [appoint, setAppoint] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [loadingFilter, setLoadingFilter] = useState(false);
     const [statusFilter, setStatusFilter] = useState("");
     const [orderFilter, setOrderFilter] = useState("desc");
-
-
+    const [loadingStatus ,setLoadingStatus] = useState(false)
+    const [updatingId, setUpdatingId] = useState<number | null>(null);
 
     function formatDate(dateOri: string) {
         const dataFormatted = new Date(dateOri).toLocaleDateString('pt-BR', {
@@ -29,22 +32,60 @@ export default function DashboardPage() {
         return dataFormatted
     }
 
+    function capitalize(str: string) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
 
-    useEffect(() =>{
-    async function getAppoint() {
+    async function handleChangeStatus(id_appoint: number, status: string) {
         try {
-            setLoading(true)
-            const res = await fetch('/api/admin/appointments');
-            const data = await res.json();
-            setAppoint(data);
+            setLoadingStatus(true)
+            setUpdatingId(id_appoint)
+            const data = await changeStatusService(id_appoint, status);
+            console.log("Status mudado com sucesso!");
+            
         } catch(err) {
-            console.error("Erro ao buscar agendamentos:", err)
-        } finally{
-            setLoading(false)
+            console.error("Erro ao mudar status: ", err);
+        } finally {
+            setLoadingStatus(false);
+            setUpdatingId(null)
         }
     }
-    getAppoint();
-    },[])
+
+    useEffect(() => {
+    async function fetchAppointments() {
+            try {
+                
+                if (appoint.length === 0) {
+                    setLoading(true);
+                } else {
+                    setLoadingFilter(true);
+                }
+
+                const url = statusFilter 
+                    ? `/api/admin/appointments?status=${statusFilter}&order=${orderFilter}`
+                    : `/api/admin/appointments?order=${orderFilter}`;
+
+                const res = await fetch(url);
+                const data = await res.json();
+                
+                
+                if (Array.isArray(data)) {
+                    setAppoint(data);
+                } else {
+                    setAppoint([]);
+                }
+            } catch (err) {
+                console.error("Erro ao buscar agendamentos:", err);
+                setAppoint([]);
+            } finally {
+                setLoading(false);
+                setLoadingFilter(false);
+            }
+        }
+
+        fetchAppointments();
+    }, [statusFilter, orderFilter, updatingId]);
 
 
     if (loading) {
@@ -86,9 +127,6 @@ export default function DashboardPage() {
                 {/* Topbar */}
                 <header className="flex justify-between items-center mb-8">
                     <h1 className="text-3xl font-bold text-slate-900">Meus Agendamentos</h1>
-                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-2.5 rounded-lg transition">
-                        Novo Agendamento
-                    </button>
                 </header>
 
                 {/* Cards Grid */}
@@ -135,20 +173,44 @@ export default function DashboardPage() {
                                     <th className="py-3 px-4 font-semibold">Data de Criação</th>
                                     <th className="py-3 px-4 font-semibold">Data do Agendamento</th>
                                     <th className="py-3 px-4 font-semibold">Status do agendamento</th>
+                                    <th className="py-3 px-4 font-semibold">Alterar Status</th>
                                 </tr>
                             </thead>
+                            
                             <tbody id="appointments-table-body" className="divide-y divide-slate-100">
-                                {appoint.map((appo: any) => (
-                                <tr key={appo.id_appointments}>
-                                    <td className="py-3 px-4">{appo.id_appointments}</td>
-                                    <td className="py-3 px-4">{appo.email}</td>
-                                    <td className="py-3 px-4">{formatDate(appo.created_at)}</td>
-                                    <td className="py-3 px-4">{formatDate(appo.date_time)}</td>
-                                    <td className="py-3 px-4">{appo.status_appoint}</td>
-
-                                </tr>
-                                
-                                ))}
+                                {loadingFilter ? (
+                                    <tr>
+                                        <td colSpan={5} className="py-8 text-center">
+                                            <Spinner />
+                                        </td>
+                                    </tr>
+                                ) : appoint.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="py-8 text-center text-slate-500">
+                                            Nenhum agendamento encontrado.
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    appoint.map((appo: any) => (
+                                        <tr key={appo.id_appointments}>
+                                            <td className="py-3 px-4">{appo.id_appointments}</td>
+                                            <td className="py-3 px-4">{appo.email}</td>
+                                            <td className="py-3 px-4">{formatDate(appo.created_at)}</td>
+                                            <td className="py-3 px-4">{formatDate(appo.date_time)}</td>
+                                            <td className="py-3 px-4">{capitalize(appo.status_appoint)}</td>
+                                            {loadingStatus ?
+                                            (<td className="py-3 px-4"><Spinner/></td>) :
+                                            (<td className="py-3 px-4 flex gap-[4px]">
+                                                <button disabled={appo.status_appoint === 'concluido'} className="text-green-600 hover:text-green-700 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" onClick={() => handleChangeStatus(appo.id_appointments, 'concluido')}> 
+                                                    <CheckCircleIcon size={25} color="green" /> 
+                                                </button>
+                                                <button disabled={appo.status_appoint === 'cancelado'} className="text-red-600 hover:text-red-700 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" onClick={() => handleChangeStatus(appo.id_appointments, 'cancelado')}> 
+                                                    <ProhibitInsetIcon size={25} color="red" /> 
+                                                </button>
+                                            </td>)}
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                         </table>
                     </div>
