@@ -95,7 +95,7 @@ export default function DashboardPage() {
                 <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                         <h3 className="text-sm font-medium text-slate-500 mb-2">Total</h3>
-                        <p id="total-count" className="text-3xl font-bold text-slate-900">0</p>
+                        <p id="total-count" className="text-3xl font-bold text-slate-900">{appoint.length}</p>
                     </div>
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100">
                         <h3 className="text-sm font-medium text-slate-500 mb-2">Ativos</h3>
