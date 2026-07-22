@@ -23,16 +23,20 @@ Concluído / Em fase de aprimoramento final.
 
 ## 🚀 Como rodar o projeto
 
+
 1. Clone o repositório:
    ```bash
    git clone <url-do-repositorio>
+Instale as dependências:
 
-   npm install
-   Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto com as credenciais do seu banco de dados e chaves de segurança.
+
+npm install
+Configure as variáveis de ambiente criando um arquivo .env na raiz do projeto com as credenciais do seu banco de dados e chaves de segurança.
 
 Execute o projeto em ambiente de desenvolvimento:
-npm run dev
 
+
+npm run dev
 Acesse http://localhost:3000 no seu navegador.
 
 🤝 Contribuições
