@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import Image from "next/image";
-import { getUserFromToken } from '@/lib/auth';
+import { checkIsAdminAction } from '@/actions/check-admin';
 import { useState, useEffect } from 'react'
 import { UserIcon, ArrowCircleDownIcon} from '@phosphor-icons/react';
 import { hover } from 'framer-motion';
@@ -16,19 +16,27 @@ const [userName, setUserName] = useState<string | null>(null);
 const [isMounted, setIsMounted] = useState(false);
 const [isOpen,  setIsOpen] = useState(false);
 const [isMouse, setIsMouse] = useState(false);
+const [isAdmin, setIsAdmin] = useState(false)
+const [isLoadingAuth, setIsLoadingAuth] = useState(true);
 
 
 useEffect(() => {
-  function updateUserName() {
+  async function updateUserName() {
   
       const name = localStorage.getItem("userName");
       console.log("Valor lido do localStorage:", name);
       if (name) {
-        setUserName(name.split(" ")[0]); 
+        setUserName(name.split(" ")[0]);
+        const adminStatus = await checkIsAdminAction();
+        setIsAdmin(adminStatus)
+        
       }
       if(!name) {
         setUserName(null)
+        setIsAdmin(false)
       }
+
+      setIsLoadingAuth(false)
     }
 
     updateUserName(); 
@@ -47,6 +55,8 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
   return (
     <nav className="w-full p-6 bg-[#EFEFE9] text-black flex justify-center items-center shadow-md gap-50">
       {/* Grupo da Esquerda (Logo + Links) */} 
+      {!isLoadingAuth &&  (
+      <>
       <div className="flex items-center gap-6">
         <Image 
           src="/hairstyle (1).png" 
@@ -61,6 +71,7 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
           <h1 className={`cursor-pointer text-sm ${hoverNav === "barbeiros" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("barbeiros")} onMouseLeave={() => setHoverNav(null)}>Barbeiros</h1>
           <h1 className={`cursor-pointer text-sm ${hoverNav === "planos" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("planos")} onMouseLeave={() => setHoverNav(null)} >Planos</h1>
           { userName && (<Link href={'/scheduling'} className={`cursor-pointer text-sm ${hoverNav === "agendar" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("agendar")} onMouseLeave={() => setHoverNav(null)} >Agendar</Link>)}
+          { isAdmin && (<Link href={'/dashboard'} className={`cursor-pointer text-sm ${hoverNav === "painelAdmin" ? "text-black" : customColor}`} onMouseEnter={() => setHoverNav("painelAdmin")} onMouseLeave={() => setHoverNav(null)} >Painel Administrativo</Link>) }
         </div>
       </div>
 
@@ -97,15 +108,15 @@ const customColor = "text-[oklch(70.7%_0.022_261.325)]";
         </button>
 
         { isOpen && (
-          <UserDropdown isOpen = {() => setIsOpen(true)} onClose = {() => setIsOpen(false)}/>
-        )
-
-        }
+          <UserDropdown isOpen = {isOpen} onClose = {() => setIsOpen(false)}/>
+        )}
       </div>
       }
 
 
       </div>
+      </>
+     )}
     </nav>
   )
 }
